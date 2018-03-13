@@ -1,0 +1,57 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+
+
+<div>
+    <blockquote>
+        <cite>烟雨平生</cite>
+    </blockquote>
+</div>
+<div class="container body-content">
+
+
+    <div class="row clearfix">
+        {% if  showPictureList|length > 0 %}
+        {% for x in showPictureList %}
+        <div class="col-md-4 column">
+            
+            <blockquote>
+                <img src="{{ x[4] }}" class="img-responsive center-block" /><br />
+                <p>
+                    {{ x[3] }}
+                </p> <small>{{x[2]}} &nbsp;<cite>{{x[5]}}</cite></small>
+            </blockquote>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+
+    <ul class="pagination">
+        {% if show_first_statue==1 %}
+        <li class=''><a href='/onRoad?p=1'>首页</a></li>
+        <li class=''><a href='/onRoad?p={{p-1}}'>上一页</a></li>
+        {%endif%}
+
+        {% for dic in dic_list %}
+        {% if dic==p %}
+        <li class="active"><a href="/onRoad?p={{dic}}">{{dic}}</a></li>
+        {%else%}
+        <li><a href="/onRoad?p={{dic}}">{{dic}}</a></li>
+        {%endif%}
+        {%endfor%}
+
+        {% if p < totalPage %}
+        <li class=''><a href='/onRoad?p={{p+1}}'>下一页</a></li>
+        <li class=''><a href='/onRoad?p={{totalPage}}'>尾页</a></li>
+        {%endif%}
+
+    </ul>
+    <p>共{{totalPage}}页</p>
+
+</div>
+
+    {% endblock %}
+

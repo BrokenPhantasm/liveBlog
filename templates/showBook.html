@@ -1,0 +1,79 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>{{ title }}</h2>
+
+    <h2>{{message}}</h2>
+
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="panel-group" id="panel-594740">
+                <div class="panel panel-default">
+                    {% for x in bookList %}
+                    {% if x == bookList[0:1][0] %}
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#" name="{{x[1]}}" href="#panel-element-{{ x[0] }}">{{ x[1] }}</a>
+                    </div>
+                    <div id="panel-element-{{ x[0] }}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            {{ x[2] }}
+                            <p style="float:right">{{x[3]}}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="panel-title" data-toggle="collapse" data-parent="#" name="{{x[1]}}" href="#panel-element-{{ x[0] }}">{{ x[1] }}</a>
+                        </div>
+                        <div id="panel-element-{{ x[0] }}"  class="panel-collapse collapse ">
+                            <div class="panel-body">
+                                {{ x[2] }}
+                                <p style="float:right">{{x[3]}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <ul class="pagination">
+        {% if show_first_statue==1 %}
+        <li class=''><a href='/show?p=1'>首页</a></li>
+        <li class=''><a href='/show?p={{p-1}}'>上一页</a></li>
+        {%endif%}
+
+        {% for dic in dic_list %}
+        {% if dic==p %}
+        <li class="active"><a href="/show?p={{dic}}">{{dic}}</a></li>
+        {%else%}
+        <li><a href="/show?p={{dic}}">{{dic}}</a></li>
+        {%endif%}
+        {%endfor%}
+
+        {% if p < totalPage %}
+        <li class=''><a href='/show?p={{p+1}}'>下一页</a></li>
+        <li class=''><a href='/show?p={{totalPage}}'>尾页</a></li>
+        {%endif%}
+
+    </ul>
+    <p>共{{totalPage}}页</p>
+
+    <br /><br />
+    <div>
+        <blockquote>
+            <p>一川烟草，满城风絮，梅子黄时雨</p>
+        </blockquote>
+    </div>
+
+</div>
+    {% endblock %}

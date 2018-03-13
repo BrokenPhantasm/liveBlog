@@ -1,0 +1,120 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+
+<div class="container body-content">
+
+    <h2>{{ title }}</h2>
+
+    <h2> {{message}}</h2>
+
+    {% if columnList!= '' %}
+    <table class="table table-hover">
+        <caption>{{ tname }}</caption>
+        <thead>
+            <tr>
+                {% for item in columnList  %}
+                <th>{{ item }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in dataList %}
+            <tr>
+                {% for y in x %}
+                <td>{{ y }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+    <div class="row clearfix">
+        <!--<div class="alert alert-success">ok</div>-->
+
+        <!-- 新增表-->
+        <div class="col-md-4 column">
+            <form action="/adminEdit/startdb" method="post">
+
+                <div class="input-group" id="CreateTableGroup">
+                    <label for="tableName1">创建表的名称</label>
+                    <input id="tableName1" class="form-control" name="tablename" /><br />
+
+                    <label> 字段 ：</label>
+                    <button type="button" class="btn btn-info" value="添加" onclick="addCloum(this)"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+                <br />
+                <p>默认字段类型为varchar， 可在语法块自行创建表</p>
+                <p> <button type="submit" class="btn btn-default" onclick="CloumNameCheck()">创建</button></p>
+            </form>
+        </div>
+
+        <!-- 查询 -->
+        <div class="col-md-4 column">
+            <form action="/adminEdit/searchdb" method="post">
+                <div class="form-group">
+                    <label for="tableName3">查询的表名称</label>
+                    <input id="tableName3" class="form-control" name="tablename" />
+                </div>
+                <p> <button type="submit" class="btn btn-default">查询</button></p>
+            </form>
+        </div>
+
+        <!-- 文本编辑 -->
+        <div class="col-md-4 column">
+            <form action="/adminEdit/insertdb" method="post">
+                <div class="form-group">
+                    <label for="tableName2">语法</label>
+                    <textarea class="form-control" rows="3" name="sqlText"></textarea>
+                </div>
+                <p> <button type="submit" class="btn btn-default">执行</button></p>
+            </form>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    function addCloum(obj) {
+        
+        html = "<div class='input-group centerIp'> "+
+            "<label class='input-group-addon' >字段名称</label> <input id='addColumName' class='form-control' name= 'careateCloum' /> " +
+            "<span class='input-group-btn'>" + 
+            "<button class='btn btn-info' type='button' data-toggle='tooltip'  title='删除' id='delCloum'><span class='glyphicon glyphicon-minus'></span></button> "+
+            "</span>" + 
+            "</div >" 
+        obj.insertAdjacentHTML('beforebegin', html)
+    }
+
+    function CloumNameCheck() {
+        var CreateTableGroup = document.getElementById("CreateTableGroup");
+        var list = CreateTableGroup.getElementsByTagName("input"); 
+        for (var i = 1; i < list.length; i++) {
+            list[i].name = "careateCloum"+ i
+        }
+
+    }
+
+    $(document).on('click', '#delCloum', function () {
+        var el = this.parentNode.parentNode
+        var centerIp = $(this).parent().parent().find('#addColumName').val()
+        var message = confirm('您确定要删除选中的命令')
+        if (message == true) {
+            el.parentNode.removeChild(el)
+        }
+            
+    })
+</script>
+    {% endblock %}

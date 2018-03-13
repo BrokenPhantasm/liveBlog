@@ -1,0 +1,203 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>{{ title }}</title>
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="../static/content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/content/site.css?v=1.0" />
+    <script src="../static/scripts/modernizr-2.6.2.js"></script>
+
+
+</head>
+
+<body style="overflow-x:hidden;">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">骤雨逐风</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('onRoad.default') }}">烟雨平生</a></li>
+                    <li><a href="{{ url_for('show.showpage') }}">星庐听雨</a></li>
+                    <li><a href="{{ url_for('bookImageEdit.default') }}">流年暗渡</a></li>
+                    <li><a href="{{ url_for('adminEdit.Default') }}">秋霜飞晚</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if g.user  %}
+                    <li><a data-toggle="modal"  href={{url_for('pcUser.showUser')}}><span class="glyphicon glyphicon-user"></span> {{ g.user }}</a></li>
+                    <li><a data-toggle="modal" href="{{url_for('user.loginOut')}}"><span class="glyphicon glyphicon-off"></span> 登出</a></li>
+                    {% else %}
+                    <li><a data-toggle="modal" data-target="#register" href=""><span class="glyphicon glyphicon-cloud"></span> 注册 </a></li>
+                    <li><a data-toggle="modal" data-target="#login" href=""><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    {#login in #}
+    <div id="login" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+
+                    </button>
+
+                </div>
+                <div class="modal-title">
+                    <h1 class="text-center">登录</h1>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" action="/user/login" method="post">
+                        <div class="form-group">
+                            <label for="">用户名</label>
+                            <input class="form-control" type="text" name="userName" placeholder="admin" value="admin"> 
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">密码    测试账号密码admin</label>
+                            <input class="form-control" type="password" name="password" placeholder="">
+
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-primary" type="submit">登录</button>
+                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
+
+                        </div>
+                        <a href="" data-toggle="modal" data-dismiss="modal" data-target="#register">注册</a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    {# register #}
+    <div id="register" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-title">
+                    <h1 class="text-center">注册</h1>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" action="/user/register" method="post">
+                        <div class="form-group">
+                            <label for="">用户名</label>
+                            <input class="form-control" type="text" name="userName" placeholder="6-15位字母或数字">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">密码</label>
+                            <input class="form-control" type="password" name="password" placeholder="至少6位字母或数字">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">再次输入密码</label>
+                            <input class="form-control" type="password" name="passwordR" placeholder="至少6位字母或数字">
+
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-primary" type="submit">提交</button>
+                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
+
+                        </div>
+                        <a href="" data-toggle="modal" data-dismiss="modal" data-target="#login">已有账号？点我登录</a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% block content %}{% endblock %}
+
+
+
+    <hr />
+    <div class="container">
+        <footer>
+            <div style="width:400px;margin:0 auto; padding:10px 0;">
+                <p  id="resultNum" class="text-center" style="height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                    
+                </p>
+            </div>
+            
+        </footer>
+    </div>
+
+
+    <script src="../static/scripts/jquery-1.10.2.js"></script>
+    <script src="../static/scripts/bootstrap.js"></script>
+    <script src="../static/scripts/respond.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ('{{message}}' != '') {
+                alert('{{message}}')
+            } else {
+                var msg = getUrlParam('msg');
+                switch (msg) {
+                    case '1': alert('人生如梦 一樽还酹江月'); break;
+                    case '2': alert('人闲桂花落 夜静春山空'); break;
+                    case '3': alert('明月松间照 清泉石上流'); break;
+                    case '4': alert('注册成功'); break;
+                    case '5': alert('注册失败'); break;
+                    case '6': alert('登录成功'); break;
+                    case '7': alert('登录失败'); break;
+                    case '8': alert('保存成功'); break;
+                }
+            }
+        });
+
+
+        function getUrlParam(name) {
+            //构造一个含有目标参数的正则表达式对象
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            //匹配目标参数
+            var r = window.location.search.substr(1).match(reg);
+            //返回参数值
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+
+        if (localStorage.pagecount) {
+            localStorage.pagecount = Number(localStorage.pagecount) + 1;
+        }
+        else {
+            localStorage.pagecount = 1;
+        }
+        document.getElementById("resultNum").innerHTML = '您对这个站点大概齐访问了：'+ localStorage.pagecount + ' 次这么多吧';
+    </script>
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>
